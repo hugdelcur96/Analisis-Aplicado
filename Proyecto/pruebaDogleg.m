@@ -10,4 +10,4 @@ g = Df(x0);
 B = D2f;
 delta = 2;
 
-p = pDogLeg(B, g, delta)
+p = pDogLeg(B, g, delta);

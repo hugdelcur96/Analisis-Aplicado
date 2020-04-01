@@ -1,38 +1,44 @@
-function [xk, msg] = mRC1(f, x0, itmax)
+function [x, msg, iter] = mRC1(f, x0, itmax)
     
-    xk = x0
-    deltak = 1
-    eta = 0.1
-    tol = 1e-5
-    deltaMax = 1.5
+    x = x0;
+    delta = 0.5;
+    eta = 0.1;
+    tol = 1e-5;
+    deltaMax = 1.5;
     
     for k = 1:itmax
-        fk = f(xk)
-        gk = apGrad(f, xk)
-        Bk = apHess(f, xk)
-        mk = @(p) fk + dot(gk, p) + 0.5 * dot(p, Bk*p)
-        pk = pCauchy(Bk, gk, deltak)
+        fk = f(x);
+        gk = apGrad(f, x);
+        Bk = apHess(f, x);
+        mk = @(p) fk + dot(gk, p) + 0.5 * dot(p, Bk*p);
+        pk = pCauchy(Bk, gk, delta);
         
-        rhok = (f(xk) - f(xk + pk)) / (mk(zeros(length(x0))') - mk(pk))
+        rhok = (f(x) - f(x + pk)) / (mk(zeros(length(pk), 1)) - mk(pk));
         
         if rhok < 0.25
-            deltak = 0.25 * deltak
-        elseif rhok > 0.75 && norm(pk) == deltak
-            deltak = min(2 * deltak, deltamax)
+            delta = 0.25 * delta;
+        elseif rhok > 0.75 && norm(pk) == delta
+            delta = min(2 * delta, deltaMax);
         else
-            deltak = deltak
+            delta = delta;
         end
         
         if rhok > eta
-            xk = xk + pk
+            x = x + pk;
         else
-            xk = xk
+            x = x;
         end
-
+        
+        if norm(gk) < tol
+            xk = x;
+            msg = 'Se encontró el mínimo :)';
+            iter = k;
+            break
+        else
+            xk = x;
+            msg = 'No se encontró el mínimo :(';
+            iter = k;
+        end
     end
-    
-    xk = xk
-    msg = 'Se encontró el mínimo :)'
-    
 end
     

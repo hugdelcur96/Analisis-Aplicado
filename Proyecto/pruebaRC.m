@@ -1,8 +1,7 @@
 clear;   close all;   clc;
 
-[f, Df, D2f] = fpascal();
-x0 = 4*ones(4,1);
-itmax = 1000;
+f = @(x) (0.26 * (x(1)^2 + x(2)^2) - 0.48 * x(1) * x(2));
+x0 = [5; 5];
+itmax = 100;
 
-
-[xk, msg] = mRC1(f, x0, itmax)
+[xk, msg, iter] = mRC1(f, x0, itmax)

@@ -32,7 +32,7 @@ function [x, msg, iter] = mRC1(f, x0, itmax)
             break
         elseif k == itmax
             x = xk;
-            k = itmax;
+            iter = itmax;
             msg = 'No se encontro el minimo :(';
         end
     end

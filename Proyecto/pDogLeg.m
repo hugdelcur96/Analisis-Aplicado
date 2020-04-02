@@ -1,4 +1,10 @@
 function [p] = pDogLeg(B, g, delta)
+% In:   B     ... a s.p.d matrix that approximates the hessian of f in xk
+%       g     ... (vector) gradient of f in xk
+%       delta ... trust region radius
+% 
+% Out:  pC    ... The dogleg point
+
     alfaU = dot(g,g) / dot(g, B * g);
     
     if alfaU >= delta / norm(g)

@@ -33,7 +33,7 @@ function [x, msg, iter] = pruebaMRC1(f, x0, itmax)
     iter = k;
     
     if norm(gk) < tol
-        msg = 'Se encontro el minimo :)'
+        msg = 'Se encontro el minimo :)';
     else
-        msg = 'No se encontro el minimo :)'
+        msg = 'No se encontro el minimo :)';
 end

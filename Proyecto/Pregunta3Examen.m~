@@ -1,0 +1,10 @@
+a = 1
+b = 1
+c = 2
+x0 = [1;1;1]
+
+B = [a 0 0; 0 b 0; 0 0 c]
+g = [a * x0(1); b * x0(2); c * x0(3)]
+pB = - inv(B) * g
+posdef = g' * B * g
+normap

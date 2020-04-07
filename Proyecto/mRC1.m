@@ -10,7 +10,7 @@ function [x, msg, iter] = mRC1(f, x0, itmax)
 %                          was found
 
     xk = x0;
-    delta = 0.5;
+    delta = 1;
     eta = 0.1;
     tol = 1e-5;
     deltaMax = 1.5;

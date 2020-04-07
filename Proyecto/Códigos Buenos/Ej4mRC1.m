@@ -14,9 +14,11 @@ contour(X,Y,z, niveles)
 axis equal
 f=fmatyas();
 it = 1000;
-j=1;
-x=zeros(128,1);
-y=zeros(128,1);
+x=zeros(129,1);
+y=zeros(129,1);
+x(1)=x0(1);
+y(1)=x0(2);
+j=2;
 for i=1:127
     [x1, msg1, h] = mRC1(f, x0, i);
     x(j)=x1(1);

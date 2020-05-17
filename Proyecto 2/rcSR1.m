@@ -21,7 +21,7 @@ function [x, iter] = rcSR1(f, x0, itmax)
     B = apHess(f, xk);
     H = speye(n);
     
-    while norm(g, 'inf') > tol % && iter < itmax
+    while norm(g, 'inf') > tol %&& iter < itmax
         % PASO 1
         s = -H * g;
         if dot(s, g) < 0
@@ -37,8 +37,10 @@ function [x, iter] = rcSR1(f, x0, itmax)
         redm = -(dot(g, s) + 0.5 * dot(s, B * s));
         gamma = apGrad(f, xk + s) - g;
         
+        cociente = redf / redm;
+        
         %PASO 3
-        if redf / redm > eta
+        if cociente > eta
             xk = xk + s;
             g = apGrad(f, xk);
             iter = iter + 1;
@@ -48,25 +50,25 @@ function [x, iter] = rcSR1(f, x0, itmax)
         end
         
         %PASO 4
-        if redf / redm > 0.75
+        if cociente > 0.75
             if norm(s) > 0.8 * delta
-                % delta = 2 * delta;
+                %delta = 2 * delta;
                 delta = min(2*delta, deltaMax);
             end
         end
         
         %PASO 5
-        if redf / redm < 0.1
+        if cociente < 0.1
             delta = 0.5 * delta;
         end
         
         %PASO 6
-        if abs(dot(gamma - B * s, s)) >= r * norm(s) * norm(gamma - B * s)
-            B = B + (gamma - B * s) * (gamma - B * s)' / dot(gamma - B * s, s);
-            H = H + (s - H * gamma) * (s - H * gamma)' / dot(s - H * gamma, gamma);
+        u = gamma - B * s;
+        if abs(dot(u, s)) >= r * norm(s) * norm(u)
+            B = B + u * u' / dot(u, s);
+            v = s - H * gamma;
+            H = H + v * v' / dot(v, gamma);
         end
-        
-        % g = apGrad(f, xk);
     end
     x = xk;
 end

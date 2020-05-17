@@ -18,8 +18,8 @@ function [x, iter] = rcSR1(f, x0, itmax)
     
     xk = x0;
     g = apGrad(f, xk);
-    B = eye(n);
-    H = B;
+    B = apHess(f, xk);
+    H = eye(n);
     
     while norm(g) > tol && iter < itmax
         % PASO 1
@@ -40,17 +40,30 @@ function [x, iter] = rcSR1(f, x0, itmax)
         %PASO 3
         if redf / redm > eta
             xk = xk + s;
-            g = apGrad(f, xk);
             iter = iter + 1;
         end
         
         %PASO 4
         if redf / redm > 0.75
-            
-    
-    
-
-    end 
+            if norm(s) > 0.8 * delta
+                delta = 2 * delta
+            end
+        end
+        
+        %PASO 5
+        if redf / redm < 0.1
+            delta = 0.5 * delta
+        end
+        
+        %PASO 6
+        if abs(dot(gamma - B * s, s)) >= r * norm(s) * norm(gamma - B * s)
+            B = B + (gamma - B * s) * (gamma - B * s)' / dot(gamma - B * s, s);
+            H = H + (s - H * gamma) * (s - H * gamma)' / dot(s - H * gamma, gamma);
+        end
+        
+        g = apGrad(f, xk);
+    end
+end
 
     
     

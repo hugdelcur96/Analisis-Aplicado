@@ -46,13 +46,13 @@ function [x, iter] = rcSR1(f, x0, itmax)
         %PASO 4
         if redf / redm > 0.75
             if norm(s) > 0.8 * delta
-                delta = 2 * delta
+                delta = 2 * delta;
             end
         end
         
         %PASO 5
         if redf / redm < 0.1
-            delta = 0.5 * delta
+            delta = 0.5 * delta;
         end
         
         %PASO 6
@@ -64,22 +64,3 @@ function [x, iter] = rcSR1(f, x0, itmax)
         g = apGrad(f, xk);
     end
 end
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

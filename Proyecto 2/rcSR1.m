@@ -21,7 +21,7 @@ function [x, iter] = rcSR1(f, x0, itmax)
     B = apHess(f, xk);
     H = speye(n);
     
-    while norm(g, 'inf') > tol %&& iter < itmax
+    while norm(g) > tol && iter < itmax
         % PASO 1
         s = -H * g;
         if dot(s, g) < 0

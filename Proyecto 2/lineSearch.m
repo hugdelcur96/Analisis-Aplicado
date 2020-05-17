@@ -17,18 +17,18 @@ function [alpha, gnew] = lineSearch( f, xk, dk, gk )
     Dphi = @(alpha) dot(apGrad(f, xk + alpha * dk), dk);
     L = @(alpha) phi(0) + c1 * alpha * Dphi(0);
     
-    while alpha1 > alphaMax
+    while alpha1 < alphaMax
         if phi(alpha1) > L(alpha1) || phi(alpha1) >= phi(alpha0)
             alpha = zoom(alpha0, alpha1, f, xk, dk);
             break
-        elseif abs(norm(Dphi(alpha1))) <= -c2 * Dphi(0)
+        elseif abs(Dphi(alpha1)) <= -c2 * Dphi(0)
             alpha = alpha1;
             break
         elseif Dphi(alpha1) >= 0
             alpha = zoom(alpha1, alpha0, f, xk, dk);
             break
         else
-            alpha0 = alphaN;
+            alpha0 = alpha1;
             alpha1 = 2 * alpha1;
         end
     end
@@ -53,9 +53,9 @@ function [alpha] = zoom(alphaLo, alphaHi, f, xk, dk)
             break
         elseif Dphi(alphaj) * (alphaHi - alphaLo) >= 0
             alphaHi = alphaLo;
+            alphaLo = alphaj;
         else
             alphaLo = alphaj;
         end
-        
     end
 end

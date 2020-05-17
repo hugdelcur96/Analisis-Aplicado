@@ -12,7 +12,7 @@ function [x, iter] = lsBFGSLiMem(f, x0, itmax, m)
     while norm(gnew) > tol
         dk = -evaluate_Hg(SS, GG, gk);
         
-        [alpha, gnew] = encAlpha( f, x, dk, gk );
+        [alpha, gnew] = lineSearch( f, x, dk, gk );
         
         s = alpha*dk;
         x = x + s;

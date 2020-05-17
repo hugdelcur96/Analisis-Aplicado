@@ -21,7 +21,7 @@ function [x, iter] = rcSR1(f, x0, itmax)
     B = apHess(f, xk);
     H = speye(n);
     
-    while norm(g, 'inf') > tol % && iter < itmax
+    while norm(g, 'inf') > tol && iter < itmax
         % PASO 1
         s = -H * g;
         if dot(s, g) < 0
@@ -40,7 +40,6 @@ function [x, iter] = rcSR1(f, x0, itmax)
         %PASO 3
         if redf / redm > eta
             xk = xk + s;
-            g = apGrad(f, xk);
             iter = iter + 1;
             if iter == itmax
                 break
@@ -66,7 +65,7 @@ function [x, iter] = rcSR1(f, x0, itmax)
             H = H + (s - H * gamma) * (s - H * gamma)' / dot(s - H * gamma, gamma);
         end
         
-        % g = apGrad(f, xk);
+        g = apGrad(f, xk);
     end
     x = xk;
 end
